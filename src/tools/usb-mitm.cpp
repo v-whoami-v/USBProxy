@@ -55,6 +55,7 @@
 #include "PacketFilter_StreamLog.h"
 #include "PacketFilter_Python.h"
 #include "PacketFilter_UDPHID.h"
+#include "PacketFilter_SwitchPad.h"
 
 
 static int debug=0;
@@ -130,10 +131,13 @@ extern "C" int main(int argc, char **argv)
 	PacketFilter_KeyLogger* keyfilter;
 	PacketFilter_PcapLogger* pcaplogger;
 	PacketFilter_UDPHID* xboxfilter;
+	PacketFilter_SwitchPad* switchfilter;
+
+	int x1, y1, x2, y2;;
 	
 	manager=new Manager();
 
-	while ((c = getopt (argc, argv, "v:p:dsc:likw:hx")) != EOF) {
+	while ((c = getopt (argc, argv, "v:p:dSsc:likw:hx")) != EOF) {
 		switch (c) {
 		case 'v':
 			vendorId = strtol(optarg, &end, 16);
@@ -146,6 +150,10 @@ extern "C" int main(int argc, char **argv)
 			break;
 		case 's':
 			server=true;
+			break;
+		case 'S':
+			switchfilter=new PacketFilter_SwitchPad();
+			manager->add_filter(switchfilter);
 			break;
 		case 'c':
 			client=true;
