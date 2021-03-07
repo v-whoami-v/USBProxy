@@ -5,7 +5,6 @@
 
 class PacketFilter_SwitchPad : public PacketFilter {
 private:
-	double angle[256];
 	void convData(__u8 *data, __u16 len);
 public:
 	PacketFilter_SwitchPad();
