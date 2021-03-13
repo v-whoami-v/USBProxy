@@ -102,6 +102,18 @@ void print_input_map() {
     }
 }
 
+void dump(Packet* packet) {
+    if (packet->wLength == 8) {
+        for (int i=0; i<8; i++) {
+            if (i == 7) {
+                printf("%02x: ", packet->data[i]);
+            } else {
+                printf("%02x ", packet->data[i]);
+            }
+        }
+    }
+}
+
 void PacketFilter_SwitchPad::convData(__u8* data, __u16 len) {
     if (len != 8) {
         return;
@@ -155,7 +167,7 @@ void PacketFilter_SwitchPad::convData(__u8* data, __u16 len) {
             angle = acos(xx / l) / (M_PI * 2) * 360;
         }
 
-        printf("X: %d Y: %d Angle: %0.4f\n", data[3], data[4], angle);
+        printf("(X: %d Y: %d Angle: %0.4f)\n", data[3], data[4], angle);
     } else {
         isvalid = false;
         point p = convMap.get(data[3], data[4]);
@@ -169,12 +181,13 @@ void PacketFilter_SwitchPad::convData(__u8* data, __u16 len) {
             angle = acos(xx / l) / (M_PI * 2) * 360;
         }
 
-        printf("(X:%3d Y: %3d) -> (X: %3d Y: %3d) Angle: %0.4f\n", rx, ry, data[3], data[4], angle);
+        printf("(X:%3d Y: %3d) -> (X: %3d Y: %3d Angle: %0.4f)\n", rx, ry, data[3], data[4], angle);
     }
 }
 
 void PacketFilter_SwitchPad::filter_packet(Packet* packet) {
     if (packet->wLength == 8 && packet->transmit) {
+        dump(packet);
         convData(packet->data, packet->wLength);
     }
 }
