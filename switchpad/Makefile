@@ -1,7 +1,7 @@
 
-.PHONY: all clean gen_drift.sh genrules_softdrift_left.sh genrules_softdrift_right.sh
+.PHONY: all clean gen_drift.sh genrules_softdrift_left.sh genrules_softdrift_right.sh genrules_softdrift.sh
 
-all: geninput gen_outer gen_left gen_left_soft gen_right gen_right_soft gen_drift.sh genrules_softdrift_left.sh genrules_softdrift_right.sh 
+all: geninput gen_outer gen_left gen_left_soft gen_right gen_right_soft gen_drift.sh genrules_softdrift_left.sh genrules_softdrift_right.sh genrules_softdrift.sh 
 
 clean:
 	-rm geninput gen_outer gen_left gen_left_soft gen_right gen_right_soft
@@ -26,3 +26,6 @@ genrules_softdrift_left.sh:
 
 genrules_softdrift_right.sh:
 	chmod +x genrules_softdrift_right.sh
+
+genrules_softdrift.sh:
+	chmod +x genrules_softdrift.sh 
