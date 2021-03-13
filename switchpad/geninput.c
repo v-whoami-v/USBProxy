@@ -15,6 +15,20 @@
 #define BUTTON_Y 0x0100
 #define BUTTON_CAP 0x0020
 #define BUTTON_HOME 0x0010
+#define BUTTON_SR 0x0008
+#define BUTTON_SL 0x0004
+#define BUTTON_PLUS  0x0002
+#define BUTTON_MINUS 0x0001
+
+#define CROSSKEY_T  0x00
+#define CROSSKEY_TR 0x01
+#define CROSSKEY_R  0x02
+#define CROSSKEY_BR 0x03
+#define CROSSKEY_B  0x04
+#define CROSSKEY_BL 0x05
+#define CROSSKEY_L  0x06
+#define CROSSKEY_TL 0x07
+#define CROSSKEY_RELEASE 0x0f
 
 typedef struct { unsigned char buf[8]; } state_t;
 
@@ -43,6 +57,10 @@ void release(state_t *state, int button) {
     state->buf[1] &= ~b1;
 }
 
+void crosskey(state_t *state, unsigned char key) {
+    state->buf[2] = key;
+}
+
 void leftstick(state_t *state, int x, int y) {
     state->buf[3] = (unsigned char)x;
     state->buf[4] = (unsigned char)y;
@@ -68,7 +86,7 @@ void output(state_t *state) {
 }
 
 void usage(FILE *fp, const char *name) {
-    fprintf(fp, "Usage: %s [-h] [-a|-A] [-b|-B] [-x|-X] [-y|-Y] [-l|-L] [-r|-R] [-zl|-ZL] [-zr|-ZR] [-cap|-CAP] [-home|-HOME] [-leftx NUM] [-lefty NUM] [-rightx NUM] [-righty NUM] [-rm]\n", name);
+    fprintf(fp, "Usage: %s [-h] [-a|-A] [-b|-B] [-x|-X] [-y|-Y] [-l|-L] [-r|-R] [-zl|-ZL] [-zr|-ZR] [-sl|-SL] [-sr|-SR] [-plus|-PLUS] [-minus|-MINUS] [-cap|-CAP] [-home|-HOME] [-leftx NUM] [-lefty NUM] [-rightx NUM] [-righty NUM] [-rm]\n", name);
 
 }
 
@@ -100,6 +118,14 @@ int main(int argc, char **argv) {
         else if (strcmp(argv[i], "-ZL") == 0) press(&state, BUTTON_ZL);
         else if (strcmp(argv[i], "-zr") == 0) release(&state, BUTTON_ZR);
         else if (strcmp(argv[i], "-ZR") == 0) press(&state, BUTTON_ZR);
+        else if (strcmp(argv[i], "-sl") == 0) release(&state, BUTTON_SL);
+        else if (strcmp(argv[i], "-SL") == 0) press(&state, BUTTON_SL);
+        else if (strcmp(argv[i], "-sr") == 0) release(&state, BUTTON_SR);
+        else if (strcmp(argv[i], "-SR") == 0) press(&state, BUTTON_SR);
+        else if (strcmp(argv[i], "-plus") == 0) release(&state, BUTTON_PLUS);
+        else if (strcmp(argv[i], "-PLUS") == 0) press(&state, BUTTON_PLUS);
+        else if (strcmp(argv[i], "-minus") == 0) release(&state, BUTTON_MINUS);
+        else if (strcmp(argv[i], "-MINUS") == 0) press(&state, BUTTON_MINUS);
         else if (strcmp(argv[i], "-cap") == 0) release(&state, BUTTON_CAP);
         else if (strcmp(argv[i], "-CAP") == 0) press(&state, BUTTON_CAP);
         else if (strcmp(argv[i], "-home") == 0) release(&state, BUTTON_HOME);
